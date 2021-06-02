@@ -4,7 +4,7 @@ import { pageGroupIcon } from "../ExplorerIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { getNextEntityName } from "utils/AppsmithUtils";
 import { createPage } from "actions/pageActions";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import { ExplorerURLParams } from "../helpers";
 import { Page } from "constants/ReduxActionConstants";
 import ExplorerPageEntity from "./PageEntity";
@@ -13,6 +13,7 @@ import { CanvasStructure } from "reducers/uiReducers/pageCanvasStructureReducer"
 import { Datasource } from "entities/Datasource";
 import { Plugin } from "api/PluginApi";
 import { extractCurrentDSL } from "utils/WidgetPropsUtils";
+import { getApplicationPageListUrl } from "constants/routes";
 
 type ExplorerPageGroupProps = {
   searchKeyword?: string;
@@ -39,6 +40,7 @@ const pageGroupEqualityCheck = (
 export const ExplorerPageGroup = memo((props: ExplorerPageGroupProps) => {
   const dispatch = useDispatch();
   const params = useParams<ExplorerURLParams>();
+  const history = useHistory();
 
   const pages = useSelector((state: AppState) => {
     return state.entities.pageList.pages;
@@ -59,8 +61,12 @@ export const ExplorerPageGroup = memo((props: ExplorerPageGroupProps) => {
     const pageWidgets = props.widgets && props.widgets[page.pageId];
     const pageActions = props.actions[page.pageId] || [];
     const datasources = props.datasources[page.pageId] || [];
-    if (!pageWidgets && pageActions.length === 0 && datasources.length === 0)
+
+    // if there are not page widgets, actions and datasources, return null
+    if (!pageWidgets && pageActions.length === 0 && datasources.length === 0) {
       return null;
+    }
+
     return (
       <ExplorerPageEntity
         actions={pageActions}
@@ -80,7 +86,11 @@ export const ExplorerPageGroup = memo((props: ExplorerPageGroupProps) => {
 
   return (
     <Entity
+      action={() =>
+        history.push(getApplicationPageListUrl(params.applicationId))
+      }
       className="group pages"
+      disabled
       entityId="Pages"
       icon={pageGroupIcon}
       isDefaultExpanded

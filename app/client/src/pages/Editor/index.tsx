@@ -39,7 +39,7 @@ import history from "utils/history";
 type EditorProps = {
   currentApplicationId?: string;
   currentPageId?: string;
-  initEditor: (applicationId: string, pageId: string) => void;
+  initEditor: (applicationId: string) => void;
   isPublishing: boolean;
   isEditorLoading: boolean;
   isEditorInitialized: boolean;
@@ -66,9 +66,9 @@ class Editor extends Component<Props> {
     editorInitializer().then(() => {
       this.setState({ registered: true });
     });
-    const { applicationId, pageId } = this.props.match.params;
-    if (applicationId && pageId) {
-      this.props.initEditor(applicationId, pageId);
+    const { applicationId } = this.props.match.params;
+    if (applicationId) {
+      this.props.initEditor(applicationId);
     }
     this.props.handlePathUpdated(window.location);
     this.unlisten = history.listen(this.handleHistoryChange);
@@ -153,8 +153,7 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    initEditor: (applicationId: string, pageId: string) =>
-      dispatch(initEditor(applicationId, pageId)),
+    initEditor: (applicationId: string) => dispatch(initEditor(applicationId)),
     resetEditorRequest: () => dispatch(resetEditorRequest()),
     handlePathUpdated: (location: typeof window.location) =>
       dispatch(handlePathUpdated(location)),

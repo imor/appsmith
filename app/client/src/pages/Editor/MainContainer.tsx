@@ -1,10 +1,11 @@
 import React from "react";
 import EditorsRouter from "./routes";
 import WidgetsEditor from "./WidgetsEditor";
+import PagesEditor from "./PagesEditor";
 import styled from "styled-components";
 import Sidebar from "components/editorComponents/Sidebar";
 import { Route, Switch } from "react-router";
-import { BUILDER_URL } from "constants/routes";
+import { APPLICATION_PAGE_LIST_URL, BUILDER_URL } from "constants/routes";
 
 import * as Sentry from "@sentry/react";
 const SentryRoute = Sentry.withSentryRouting(Route);
@@ -27,6 +28,11 @@ function MainContainer() {
       <EditorContainer>
         <Switch>
           <SentryRoute component={WidgetsEditor} exact path={BUILDER_URL} />
+          <SentryRoute
+            component={PagesEditor}
+            exact
+            path={APPLICATION_PAGE_LIST_URL}
+          />
           <SentryRoute component={EditorsRouter} />
         </Switch>
       </EditorContainer>

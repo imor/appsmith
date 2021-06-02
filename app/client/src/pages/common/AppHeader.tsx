@@ -8,7 +8,7 @@ import { Route, Switch } from "react-router";
 import {
   APP_VIEW_URL,
   BASE_URL,
-  BUILDER_URL,
+  APPLICATION_URL,
   USER_AUTH_URL,
 } from "constants/routes";
 import { withRouter, RouteComponentProps } from "react-router";
@@ -34,7 +34,7 @@ class AppHeader extends React.Component<Props, any> {
   get header() {
     return (
       <Switch>
-        <Route component={AppEditorHeader} path={BUILDER_URL} />
+        <Route component={AppEditorHeader} path={APPLICATION_URL} />
         <Route component={AppViewerHeader} path={APP_VIEW_URL} />
         <Route component={LoginHeader} path={USER_AUTH_URL} />
         <Route component={PageHeader} path={BASE_URL} />

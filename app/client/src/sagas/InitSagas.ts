@@ -86,7 +86,7 @@ function* failFastApiCalls(
 function* initializeEditorSaga(
   initializeEditorAction: ReduxAction<InitializeEditorPayload>,
 ) {
-  const { applicationId, pageId } = initializeEditorAction.payload;
+  const { applicationId } = initializeEditorAction.payload;
   try {
     PerformanceTracker.startAsyncTracking(
       PerformanceTransactionName.INIT_EDIT_APP,
@@ -98,17 +98,14 @@ function* initializeEditorSaga(
     const applicationAndLayoutCalls = yield failFastApiCalls(
       [
         fetchPageList(applicationId, APP_MODE.EDIT),
-        fetchPage(pageId),
         fetchApplication(applicationId, APP_MODE.EDIT),
       ],
       [
         ReduxActionTypes.FETCH_PAGE_LIST_SUCCESS,
-        ReduxActionTypes.FETCH_PAGE_SUCCESS,
         ReduxActionTypes.FETCH_APPLICATION_SUCCESS,
       ],
       [
         ReduxActionErrorTypes.FETCH_PAGE_LIST_ERROR,
-        ReduxActionErrorTypes.FETCH_PAGE_ERROR,
         ReduxActionErrorTypes.FETCH_APPLICATION_ERROR,
       ],
     );
